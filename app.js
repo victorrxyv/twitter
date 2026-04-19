@@ -21,7 +21,6 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
-// ── api do firebase ──
 const firebaseConfig = {
   apiKey: "AIzaSyB4YDeZDn6oLfwIFGiEhSS2yFrZEIiNWgM",
   authDomain: "twitter-d8ba9.firebaseapp.com",
@@ -37,7 +36,35 @@ const db = getFirestore();
 
 // username do usuário logado (carregado do Firestore)
 let usernameAtual = "";
-let nomeAtual = ""
+let nomeAtual = "";
+
+// ── cadastro ou login ──
+let modoAtual = "cadastro";
+
+window.alternarModo = function (e) {
+  e.preventDefault();
+  const campos  = document.getElementById("campos-cadastro");
+  const btnAcao = document.getElementById("btn-acao");
+  const link    = document.getElementById("link-alternar");
+  const titulo  = document.querySelector(".login-box h1");
+  const hint    = document.querySelector(".login-hint");
+
+  if (modoAtual === "cadastro") {
+    modoAtual = "login";
+    campos.classList.add("oculto");
+    btnAcao.textContent = "Entrar";
+    link.textContent    = "Criar conta";
+    titulo.innerHTML    = "Entrar no <i>Shaolean Hub</i>";
+    hint.childNodes[0].textContent = "Não tem uma conta? ";
+  } else {
+    modoAtual = "cadastro";
+    campos.classList.remove("oculto");
+    btnAcao.textContent = "Cadastrar";
+    link.textContent    = "Entrar";
+    titulo.innerHTML    = "Criar conta no <i>Shaolean Hub</i>";
+    hint.childNodes[0].textContent = "Já tem uma conta? ";
+  }
+};
 
 // ── Busca username do usuário no Firestore ──
 async function carregarUsername(uid) {
@@ -81,8 +108,6 @@ onAuthStateChanged(auth, (user) => {
 
 // ── Login / Cadastro ──
 window.login = async function () {
-  const nome = document.getElementById("nome").value.trim();
-  const username = document.getElementById("username").value.trim();
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value;
 
@@ -91,28 +116,31 @@ window.login = async function () {
     return;
   }
 
-  try {
-    // tenta fazer login normalmente
-    await signInWithEmailAndPassword(auth, email, senha);
-  } catch (e) {
-    if (e.code === "auth/user-not-found" || e.code === "auth/invalid-credential") {
-      // conta não existe — cria uma nova
-      if (!username) {
-        alert("Para criar uma conta, preencha também o @username!");
-        return;
-      }
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, email, senha);
-        // salva o username no Firestore vinculado ao uid
-        await setDoc(doc(db, "usuarios", cred.user.uid), {
-          nome: nome,
-          username: username,
-          email: email
-        });
-      } catch (e2) {
-        alert("Erro: " + e2.message);
-      }
-    } else {
+  if (modoAtual === "login") {
+    // ── Modo login: só email e senha ──
+    try {
+      await signInWithEmailAndPassword(auth, email, senha);
+    } catch (e) {
+      alert("Erro: " + e.message);
+    }
+
+  } else {
+    // ── Modo cadastro: precisa de nome e username ──
+    const nome     = document.getElementById("nome").value.trim();
+    const username = document.getElementById("username").value.trim();
+
+    if (!username) {
+      alert("Preencha o @username para criar uma conta!");
+      return;
+    }
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, senha);
+      await setDoc(doc(db, "usuarios", cred.user.uid), {
+        nome:     nome,
+        username: username,
+        email:    email
+      });
+    } catch (e) {
       alert("Erro: " + e.message);
     }
   }
@@ -144,7 +172,7 @@ window.atualizarContador = function () {
   const el = document.getElementById("contador");
   el.textContent = `${len} / 144`;
   el.className = "char-count" +
-    (len >= 144 ? " limite" : len >= 144 ? " perto" : "");
+    (len >= 144 ? " limite" : len >= 130 ? " perto" : "");
 };
 
 // ── Postar ──
