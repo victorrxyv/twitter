@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="style.css">
+  <title>Shaolean Hub</title>
+</head>
+<body>
+  
+  <div id="home-anm">
+    <div id="home-anm-logo">
+      <p style="font-size: 6rem;"><i class="fa-brands fa-x-twitter"></i></p> 
+      <h3>SHAOLEAN HUB</h3>
+    </div>  
+  </div>
+
+  <main id="pagina-login">
+
+    <section class="login-box" aria-label="Área de login">
+      <p class="logo" aria-hidden="true"><i class="fa-brands fa-x-twitter"></i></p>
+      <h1>Entrar no <i>Shaolean Hub</i></h1>
+
+      <!--
+        <label>: associa o texto descritivo ao input correto
+        for + id: vincula o label ao campo (acessibilidade e clique)
+        sr-only: label visível apenas para leitores de tela (já temos placeholder)
+      -->
+      <label for="nome" class="sr-only">Nome da conta</label>
+      <input id="nome" type="text" placeholder="Nome (só no cadastro)" autocomplete="username">
+      
+      <label for="username" class="sr-only">Nome de usuário</label>
+      <input id="username" type="text" placeholder="@username (só no cadastro)" autocomplete="username">
+
+      <label for="email" class="sr-only">Email</label>
+      <input id="email" type="email" placeholder="Email" autocomplete="email">
+
+      <label for="senha" class="sr-only">Senha</label>
+      <input id="senha" type="password" placeholder="Senha" autocomplete="current-password">
+
+      <button class="btn-login" onclick="login()">Entrar</button>
+      <p class="login-hint">Já tem conta? Deixe o @username e o nome em branco e entre com email e senha.</p>
+    </section>
+  </main>
+
+ <div id="pagina-feed">
+
+    <header class="topbar">
+      <p class="brand"><i class="fa-solid fa-circle-user" aria-hidden="true"></i></p>
+      <p class="logo"><i class="fa-brands fa-x-twitter"></i></p>
+   <button class="btn-logout" onclick="logout()">
+          <i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <main class="feed-wrapper">
+      <section aria-label="Feed de posts">
+        <ol id="feed" reversed>
+          <li class="feed-vazio">
+            <i class="fa-solid fa-face-frown" aria-hidden="true"></i> Nenhum post ainda. Seja o primeiro!
+          </li>
+        </ol>
+      </section>
+    </main>
+
+    <button class="fab" id="fab" onclick="abrirModal()" aria-label="Novo tweet">
+      <i class="fa-solid fa-plus" aria-hidden="true"></i>
+    </button>
+
+  </div>
+
+  <!-- ══════════════════ MODAL TWEET ══════════════════ -->
+  <!--
+    role="dialog": informa leitores de tela que é um diálogo
+    aria-modal: indica que o foco deve ficar dentro do modal
+    aria-labelledby: associa o título ao modal
+  -->
+  <div class="modal-overlay" id="modal" onclick="fecharModalFora(event)" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+    <article class="modal-box">
+      <div class="modal-box-header">  
+      <h4 class="user-info" aria-label="Ações do usuário">
+        <span id="usuario-logado"></span></h4>        
+      </div>
+      <label for="tweet" class="sr-only">Texto do tweet</label>
+      <textarea
+        id="tweet"
+        placeholder="O que está acontecendo?"
+        maxlength="143"
+        oninput="atualizarContador()"
+        aria-describedby="contador"
+      ></textarea>
+
+      <!--
+        aria-live: anuncia mudanças em tempo real para leitores de tela
+        aria-atomic: lê o conteúdo completo a cada atualização
+      -->
+      <p class="char-count" id="contador" aria-live="polite" aria-atomic="true">0 / 144</p>
+
+      <footer class="modal-actions">
+     <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+        <button class="btn-postar" onclick="postar()">
+          <i class="fa-solid fa-feather-pointed" aria-hidden="true"></i> Publicar
+        </button>
+      </footer>
+    </article>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
