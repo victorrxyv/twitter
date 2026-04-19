@@ -22,16 +22,14 @@
       <p class="logo" aria-hidden="true"><i class="fa-brands fa-x-twitter"></i></p>
       <h1>Entrar no <i>Shaolean Hub</i></h1>
 
-      <!--
-        <label>: associa o texto descritivo ao input correto
-        for + id: vincula o label ao campo (acessibilidade e clique)
-        sr-only: label visível apenas para leitores de tela (já temos placeholder)
-      -->
-      <label for="nome" class="sr-only">Nome da conta</label>
-      <input id="nome" type="text" placeholder="Nome (só no cadastro)" autocomplete="username">
-      
-      <label for="username" class="sr-only">Nome de usuário</label>
-      <input id="username" type="text" placeholder="@username (só no cadastro)" autocomplete="username">
+      <!-- Campos só de cadastro -->
+      <div id="campos-cadastro">
+        <label for="nome" class="sr-only">Nome de exibição</label>
+        <input id="nome" type="text" placeholder="Nome de exibição" autocomplete="name">
+
+        <label for="username" class="sr-only">Nome de usuário</label>
+        <input id="username" type="text" placeholder="@username" autocomplete="username">
+      </div>
 
       <label for="email" class="sr-only">Email</label>
       <input id="email" type="email" placeholder="Email" autocomplete="email">
@@ -39,8 +37,11 @@
       <label for="senha" class="sr-only">Senha</label>
       <input id="senha" type="password" placeholder="Senha" autocomplete="current-password">
 
-      <button class="btn-login" onclick="login()">Entrar</button>
-      <p class="login-hint">Já tem conta? Deixe o @username e o nome em branco e entre com email e senha.</p>
+      <button class="btn-login" id="btn-acao" onclick="login()">Cadastrar</button>
+      <p class="login-hint">
+        Já tem uma conta?
+        <a href="#" id="link-alternar" onclick="alternarModo(event)">Entrar</a>
+      </p>
     </section>
   </main>
 
