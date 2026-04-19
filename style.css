@@ -38,9 +38,6 @@ body {
   }
 }
 
-
-
-/* Oculta visualmente mas mantém acessível para leitores de tela */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -62,7 +59,7 @@ body {
 background: linear-gradient(46deg, rgba(0, 0, 0, 1) 0%, rgba(26, 26, 26, 1) 100%);
 }
 
-/* <section> como caixa de login */
+/* caixa de login */
 .login-box {
   backdrop-filter: saturate(180%) blur (20px);
   background-color: rgba(0, 0, 0, 0.7);
@@ -179,7 +176,7 @@ ol#feed {
   padding: 0;
 }
 
-/* <li> + <article> cada post */
+/* cada post */
 ol#feed li article {
   display: flex;
   flex-direction: column;
@@ -218,7 +215,7 @@ ol#feed li article {
   color: #bfbfbf;
 }
 
-/* <li> de feed vazio */
+/* feed vazio */
 .feed-vazio {
   text-align: center;
   color: #aaa;
@@ -307,7 +304,7 @@ ol#feed li article {
   outline: none;
 }
 
-/* <footer> com botões do modal */
+/* botões do modal */
 
 .modal-actions {
   gap: 10px;
@@ -351,3 +348,27 @@ ol#feed li article {
 
 .char-count.perto  { color: #f4900c; }
 .char-count.limite { color: #e0245e; }
+
+/* login/cadastro */
+#campos-cadastro {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 200px;
+  opacity: 1;
+}
+
+#campos-cadastro.oculto {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.login-hint a {
+  color: #1da1f2;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.login-hint a:hover {
+  text-decoration: underline;
+}
